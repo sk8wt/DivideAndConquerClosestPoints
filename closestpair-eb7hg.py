@@ -89,6 +89,7 @@ def closest_pair(points: list) -> PointsDistancePair:  # returns 2 points that a
     left_points_distance_pair = PointsDistancePair([], float("inf"))
     right_points_distance_pair = PointsDistancePair([], float("inf"))
 
+
     # Left side
     if len(left) < 2:
         left_dist = float("inf")
