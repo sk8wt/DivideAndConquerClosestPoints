@@ -10,10 +10,10 @@ class Point:
         self.y = y
 
     def __repr__(self):
-        return "{},{}".format(self.x, self.y)
+        return "[{},{}]".format(self.x, self.y)
 
     def __str__(self):
-        return "{},{}".format(self.x, self.y)
+        return "[{},{}]".format(self.x, self.y)
 
 
 @total_ordering
@@ -55,7 +55,6 @@ def shortest_path(point_list: List[Point],
     def find_points_on_runway(runway_width: float, median: float, points: List[Point]) -> List[Point]:
         max_x = median + runway_width
         min_x = median - runway_width
-
         points_on_runway = [point for point in points if min_x < point.x < max_x]
         points_on_runway.sort(key=get_y)  # TODO use merge sort
         return points_on_runway
@@ -84,7 +83,7 @@ def shortest_path(point_list: List[Point],
 
             median = int(len(points) / 2)  # Center divider
 
-            left = points[0:median]
+            left = points[:median]
             right = points[median:]
 
             shortest_left.append(divide(left))
@@ -97,6 +96,7 @@ def shortest_path(point_list: List[Point],
             shortest_runway = []
             runway_points = find_points_on_runway(runway_width.distance, points[median].x,
                                                   points)  # find all points within 2 delta
+
             shortest_runway.append(conquer(runway_points))
             min_runway = min(shortest_runway)
 
