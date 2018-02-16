@@ -60,23 +60,18 @@ def find_points_on_runway(runway_width: float, median: float, points: List[Point
     return points_on_runway
 
 
-def compare_runway_points(points: list,
-                          best_distance_points: List[Point],
-                          best_distance_val: float) -> PointsDistancePair:
+def compare_runway_points(points: list) -> PointsDistancePair:
     # starting from the bottom point recurse up the list of points by checking 15 above the current item
-    if len(points) <= 1:
-        return PointsDistancePair(best_distance_points, best_distance_val)
-    else:
-        current_point = points[0]
-        points.pop(0)
-        max_idx = min(15, len(points))  # find the maximum value to run until
-        for i in range(0, max_idx):
-            curr_distance = distance(current_point, points[i])
+    max_idx = min(15, len(points))  # find the maximum value to run until
+    best_distance_points = []
+    best_distance_val = float("inf")
+    for i in range(max_idx - 1):
+        curr_distance = distance(points[i], points[i + 1])
+        if curr_distance < best_distance_val:
+            best_distance_val = curr_distance
+            best_distance_points = [points[i], points[i + 1]]
 
-            if curr_distance < best_distance_val:
-                best_distance_points = [current_point, points[i]]
-                best_distance_val = curr_distance
-        return compare_runway_points(points, best_distance_points, best_distance_val)
+    return PointsDistancePair(best_distance_points, best_distance_val)
 
 
 def closest_pair(points: list) -> PointsDistancePair:  # returns 2 points that are closest to one another
@@ -115,12 +110,12 @@ def closest_pair(points: list) -> PointsDistancePair:  # returns 2 points that a
     print(runway_width)
     runway_points = find_points_on_runway(runway_width, points[median].x, points)  # find all points within 2 delta
     best_runway_points = []  # empty list for now, will be filled by following function
-    runway_pair = compare_runway_points(runway_points, best_runway_points, runway_width)
+    runway_pair = compare_runway_points(runway_points)
     return min(left_points_distance_pair, right_points_distance_pair, runway_pair)
 
 
 def main():
-    f = open("allvertical.txt", "r")
+    f = open("mostlyvertical.txt", "r")
     points = []
     plants = f.readline().strip()
     for line in f:
