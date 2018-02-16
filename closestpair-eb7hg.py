@@ -113,14 +113,14 @@ def closest_pair(points: list) -> PointsDistancePair:  # returns 2 points that a
     # Combine Step
     runway_width = min(left_dist, right_dist)  # this is delta
     print(runway_width)
-    runway_points = find_points_on_runway(runway_width, median, points)  # find all points within 2 delta
+    runway_points = find_points_on_runway(runway_width, points[median].x, points)  # find all points within 2 delta
     best_runway_points = []  # empty list for now, will be filled by following function
     runway_pair = compare_runway_points(runway_points, best_runway_points, runway_width)
     return min(left_points_distance_pair, right_points_distance_pair, runway_pair)
 
 
 def main():
-    f = open("mostlyvertical.txt", "r")
+    f = open("allvertical.txt", "r")
     points = []
     plants = f.readline().strip()
     for line in f:
