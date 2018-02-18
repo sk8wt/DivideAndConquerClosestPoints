@@ -99,11 +99,16 @@ def compare_runway_points(points: list) -> PointsDistancePair:
     best_distance_val = float("inf")
     for i in range(len(points)):  # iterate through every point
         max_idx = min(15, len(points))  # find the maximum value to run until
-        for j in range(i + 1, max_idx - 1):  # iterate through the 15 points above
-            curr_distance = distance(points[i], points[j])
-            if curr_distance < best_distance_val:
-                best_distance_val = curr_distance
-                best_distance_points = [points[i], points[i + 1]]
+        num_comparisons = 0
+        for j in range(i + 1, len(points)):  # iterate through the 15 points above
+            if num_comparisons < max_idx:
+                curr_distance = distance(points[i], points[j])
+                if curr_distance < best_distance_val:
+                    best_distance_val = curr_distance
+                    best_distance_points = [points[i], points[i + 1]]
+                num_comparisons += 1
+            else:
+                break
 
     return PointsDistancePair(best_distance_points, best_distance_val)
 
@@ -147,7 +152,7 @@ def closest_pair(points: list) -> PointsDistancePair:  # returns 2 points that a
 
 
 def main():
-    f = open("allvertical.txt", "r")
+    f = open("garden.txt", "r")
     points = []
     plants = f.readline().strip()
     for line in f:
